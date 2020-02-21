@@ -3,18 +3,7 @@
   margin-right: auto;
   width: 650px;
 }
-body {
-  background-color: lavender;
-}
-img.resize {
-  max-width:50%;
-  max-height:50%;
-}
-img.rotate90 {
-    -webkit-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-            transform: rotate(90deg);
-}
+
 #greeting-container {
   margin-top: 20px;
 }

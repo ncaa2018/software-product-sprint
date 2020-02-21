@@ -17,11 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['I once had 7 wisdom teeth!','I have not ate a physical banana. Ever.',
-      'I lived on Capitol Hill in DC for a semester in high school! #SEGL',
-      'I am an Outside Hitter in volleyball.',
-      '"Nothing softens the wounds of your ancestors like the sweetness of your existence."'
-      ,'I did a summer homestay in Peru in high school!'];
+      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
