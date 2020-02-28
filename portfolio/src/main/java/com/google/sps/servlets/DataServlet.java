@@ -14,40 +14,74 @@
 
 package com.google.sps.servlets;
 
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
+import com.google.sps.data.Comment;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList; 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  //Arraylist to add comments in
-    ArrayList<String> comments = new ArrayList<String>();
+  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      //query to create some sort of order with the data
+    Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Comment> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String text = (String) entity.getProperty("text");
+      long time = (long) entity.getProperty("time");
+
+      Comment comment = new Comment(id, text, time); //creating different entities/comments from datastore to then load
+      comments.add(comment);
+    }
 
     Gson gson = new Gson();
     String json = gson.toJson(comments);
 
-    response.setContentType("text/html;");
+    response.setContentType("application/json;");
     response.getWriter().println("<p>"+json+"</p>");
 
   }
 
     @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
-    String text = getParameter(request, "comment", "");
+    // //Arraylist to add comments in
+    // ArrayList<String> comments = new ArrayList<String>();
 
-    // Respond with the result.
-    response.setContentType("text/html;");
-    response.getWriter().println(comments.add(text));
+    // // Get the input from the comment textbox
+    String text = getParameter(request, "comment", "");
+    long time = System.currentTimeMillis();
+
+    // // Respond with the result.
+    // response.setContentType("text/html;");
+    // response.getWriter().println(comments.add(text));
+
+    //storing comments in entities
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("time", time); //so I can load the comments in an order based on time
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
