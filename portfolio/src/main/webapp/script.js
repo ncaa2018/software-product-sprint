@@ -71,6 +71,8 @@ function addDataToDom(data) {
 
 async function getDataUsingAsyncAwait() {
   const response = await fetch('/data');
+  console.log('Fetching data from server.');
   const data = await response.text();
   document.getElementById('data-container').innerHTML = data;
+  
 }
