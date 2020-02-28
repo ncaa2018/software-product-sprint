@@ -45,11 +45,12 @@ public class DataServlet extends HttpServlet {
     // Get the input from the form.
     String text = getParameter(request, "comment", "");
 
-  
-
     // Respond with the result.
     response.setContentType("text/html;");
     response.getWriter().println(comments.add(text));
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
 
   }
 
