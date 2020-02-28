@@ -61,7 +61,7 @@ function handleResponse(response) {
   textPromise.then(addDataToDom);
 }
 
-/** Adds a random quote to the DOM. */
+/** Adds data to the DOM. */
 function addDataToDom(data) {
   console.log('Adding data to dom: ' + data);
 
