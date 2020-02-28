@@ -8,9 +8,18 @@
   </head>
   <body>
     <div id="content">
-      <h1>Data</h1>
-      <p>Click here to see some data:</p>
-      <button onclick="getDataUsingAsyncAwait()">Data</button>
+
+      <h1>Add a comment</h1>
+      <form action="/data" method="POST">
+      <p>Add comment:</p>
+      <textarea name="comment"></textarea>
+      <br/><br/>
+      <input type="submit" />
+      </form>
+
+     
+      <p>Click here to see all comments:</p>
+      <button onclick="getDataUsingAsyncAwait()">comments</button>
       <div id="data-container"></div>
     </div>
   </body>

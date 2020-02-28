@@ -26,21 +26,43 @@ import java.util.ArrayList;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  //Arraylist to add comments in
+    ArrayList<String> comments = new ArrayList<String>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    ArrayList<String> arrString = new ArrayList<String>();
-    arrString.add("I am from Houston.");
-    arrString.add("I was in DC for a few months.");
-    arrString.add("I am now in Claremont for school.");
-    arrString.add("I was in Seattle last summer.");
-
     Gson gson = new Gson();
-    String json = gson.toJson(arrString);
+    String json = gson.toJson(comments);
 
     response.setContentType("text/html;");
     response.getWriter().println("<p>"+json+"</p>");
 
+  }
+
+    @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = getParameter(request, "comment", "");
+
+  
+
+    // Respond with the result.
+    response.setContentType("text/html;");
+    response.getWriter().println(comments.add(text));
+
+  }
+
+    /**
+   * @return the request parameter, or the default value of the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 
 }
