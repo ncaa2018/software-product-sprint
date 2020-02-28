@@ -38,7 +38,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      //query to create some sort of order with the data
+      // Query to retrieve all comments, sorted by most recent first.
     Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
