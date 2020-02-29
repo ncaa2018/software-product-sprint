@@ -40,7 +40,7 @@ async function getComments() {
   console.log('Fetching data from server.');
   const comments = await response.json();
   console.log(comments);
-  const commentsElement = document.getElementById('comments-container');
+  const commentsElement = document.getElementById('comments-container'); //where I would like to post the comments that are fetched
   console.log(commentsElement);
   comments.forEach((comment) => {
       commentsElement.appendChild(createCommentElement(comment));
@@ -50,14 +50,18 @@ async function getComments() {
 
 /** Creates an element that represents a comment */
 function createCommentElement(comment) {
-  const commentElement = document.createElement('div');
+  const commentElement = document.createElement('li');
   commentElement.className = 'comment';
 
-  const textElement = document.createElement('div');
-  textElement.innerText = comment.newComment;
+  const textElement = document.createElement('span');
+  textElement.innerText = comment.text;
+
+  const timeElement = document.createElement('time');
+  timeElement.innerText = comment.date;
+   
 
   commentElement.appendChild(textElement);
-
+  commentElement.appendChild(timeElement);
 
   return commentElement;
 }
