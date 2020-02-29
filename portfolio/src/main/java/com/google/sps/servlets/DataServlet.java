@@ -47,10 +47,10 @@ public class DataServlet extends HttpServlet {
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String text = (String) entity.getProperty("text");
+      String newComment = (String) entity.getProperty("newComment");
       long time = (long) entity.getProperty("time");
 
-      Comment comment = new Comment(id, text, time); //creating different entities/comments from datastore to then load
+      Comment comment = new Comment(id, newComment, time); //creating different entities/comments from datastore to then load
       comments.add(comment);
     }
 
@@ -64,20 +64,15 @@ public class DataServlet extends HttpServlet {
 
     @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // //Arraylist to add comments in
-    // ArrayList<String> comments = new ArrayList<String>();
+    
 
-    // // Get the input from the comment textbox
-    String text = getParameter(request, "comment", "");
+    // Get the input from the comment textbox and the time the comment was made
+    String newComment = getParameter(request, "comment", "");
     long time = System.currentTimeMillis();
-
-    // // Respond with the result.
-    // response.setContentType("text/html;");
-    // response.getWriter().println(comments.add(text));
 
     //storing comments in entities
     Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("text", text);
+    commentEntity.setProperty("newComment", newComment);
     commentEntity.setProperty("time", time); //so I can load the comments in an order based on time
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
