@@ -35,11 +35,13 @@ function addRandomGreeting() {
 /** returns comments directly without promises and adds them to the DOM 
  */
 
-async function getDataUsingAsyncAwait() {
+async function getComments() {
   const response = await fetch('/data');
   console.log('Fetching data from server.');
   const comments = await response.json();
+  console.log(comments);
   const commentsElement = document.getElementById('comments-container');
+  console.log(commentsElement);
   comments.forEach((comment) => {
       commentsElement.appendChild(createCommentElement(comment));
   })
