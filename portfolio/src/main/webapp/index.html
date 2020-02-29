@@ -6,27 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
-    <div id="content">
 
-      <h1>Add a comment</h1>
-      <form action="/data" method="POST">
-      <p>Add comment:</p>
-      <textarea rows="5" cols="80" name="comment"></textarea>
-      <br/><br/>
-      <input type="submit" />
-      </form>
-
-     
-      <p>Click here to see all comments:</p>
-      <button onclick="getComments()">comments</button>
-      <div id="comments-container"></div>
-
-
-      <ul id="list-of-comments"></ul>
-    </div>
-  </body>
-  
   <body>
     <div id="content">
       <h1>Naomi Amuzie's Portfolio</h1>
@@ -73,4 +53,24 @@ But perhaps forgiveness may just be just a peace of mind and a piece of strength
       <p>Click <a href="https://github.com/ncaa2018">here</a> for my GitHub profile. </p>
     </div>
   </body>
+
+
+    <body>
+    <div id="content">
+
+      <h1>Add a comment</h1>
+      <form action="/data" method="POST">
+      <p>Add comment:</p>
+      <textarea rows="5" cols="80" name="comment"></textarea>
+      <br/><br/>
+      <input type="submit" />
+      </form>
+
+      <p> Comments </p>
+      <body onload="getComments()">
+      <div id="comments-container"></div>
+
+    </div>
+  </body>
+  
 </html>
