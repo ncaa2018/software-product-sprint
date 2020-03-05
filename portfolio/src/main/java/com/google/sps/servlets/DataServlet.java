@@ -14,7 +14,17 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +34,65 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Naomi!</h1>");
+      // Query to retrieve all comments, sorted by most recent first.
+    Query query = new Query("Comment").addSort("time", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Comment> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String newComment = (String) entity.getProperty("newComment");
+      long time = (long) entity.getProperty("time");
+
+      Comment comment = new Comment(id, newComment, time); //creating different entities/comments from datastore to then load
+      comments.add(comment);
+    }
+
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
+
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
   }
+
+    @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+
+    // Get the input from the comment textbox and the time the comment was made
+    String newComment = getParameter(request, "comment", "");
+    long time = System.currentTimeMillis();
+
+    //storing comments in entities
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("newComment", newComment);
+    commentEntity.setProperty("time", time); //so I can load the comments in an order based on time
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
+
+  }
+
+    /**
+   * @return the request parameter, or the default value of the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
+
 }

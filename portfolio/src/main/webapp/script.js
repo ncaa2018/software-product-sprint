@@ -32,45 +32,44 @@ function addRandomGreeting() {
 }
 
 
-/**
- * Fetches a random quote from the server and adds it to the DOM.
+/** returns comments directly without promises and adds them to the DOM 
  */
-function getData() {
-  console.log('Fetching data from server.');
 
-  // The fetch() function returns a Promise because the request is asynchronous.
-  const responsePromise = fetch('/data');
-
-  // When the request is complete, pass the response into handleResponse().
-  responsePromise.then(handleResponse);
-}
-
-/**
- * Handles response by converting it to text and passing the result to
- * addQuoteToDom().
- */
-function handleResponse(response) {
-  console.log('Handling the response.');
-
-  // response.text() returns a Promise, because the response is a stream of
-  // content and not a simple variable.
-  const textPromise = response.text();
-
-  // When the response is converted to text, pass the result into the
-  // addQuoteToDom() function.
-  textPromise.then(addDataToDom);
-}
-
-/** Adds a random quote to the DOM. */
-function addDataToDom(data) {
-  console.log('Adding data to dom: ' + data);
-
-  const dataContainer = document.getElementById('data-container');
-  dataContainer.innerText = data;
-}
-
-async function getDataUsingAsyncAwait() {
+async function getComments() {
   const response = await fetch('/data');
-  const data = await response.text();
-  document.getElementById('data-container').innerHTML = data;
+  console.log('Fetching data from server.');
+  const comments = await response.json();
+  console.log(comments);
+  const commentsElement = document.getElementById('comments-container'); //where I would like to post the comments that are fetched
+  console.log(commentsElement);
+  comments.forEach((comment) => {
+      commentsElement.appendChild(createCommentElement(comment));
+  })
+}
+
+
+/** Creates an element that represents a comment */
+function createCommentElement(comment) {
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
+
+  const textElement = document.createElement('span');
+  textElement.innerText = comment.text;
+
+  const timeElement = document.createElement('time');
+  timeElement.innerText = comment.date;
+   
+
+  commentElement.appendChild(textElement);
+  commentElement.appendChild(timeElement);
+
+  return commentElement;
+}
+
+/** Creates a map and adds it to the page. */
+function createMap() {
+    console.log("entering map");
+  const map = new google.maps.Map(
+      document.getElementById('map-rwanda'),
+      {center: {lat: -1.944960, lng: 30.062040}, zoom: 11});
 }
