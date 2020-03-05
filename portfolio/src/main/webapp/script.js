@@ -66,3 +66,10 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
+/** Creates a map and adds it to the page. */
+function createMap() {
+    console.log("entering map");
+  const map = new google.maps.Map(
+      document.getElementById('map-rwanda'),
+      {center: {lat: -1.944960, lng: 30.062040}, zoom: 11});
+}
