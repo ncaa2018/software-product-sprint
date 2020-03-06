@@ -69,7 +69,35 @@ function createCommentElement(comment) {
 /** Creates a map and adds it to the page. */
 function createMap() {
     console.log("entering map");
+    //creating a map with properties
   const map = new google.maps.Map(
-      document.getElementById('map-rwanda'),
-      {center: {lat: -1.944960, lng: 30.062040}, zoom: 11});
+      document.getElementById('map-rwanda'), {
+          mapTypeId: 'satellite',
+          draggable: true,
+      center: {lat: -1.944960, lng: 30.062040}, zoom: 11});
+
+    //creating markers for places I've been
+    const kigali = new google.maps.Marker({
+    position: {lat: -1.944960, lng: 30.062040},
+    map: map,
+    label: '3',
+    title: 'Kigali, Rwanda'
+  });
+    const trujillo = new google.maps.Marker({
+    position: {lat: -8.111840, lng: -79.028670},
+    map: map,
+    label: '1',
+    title: 'Trujillo, Peru'
+  });
+    const laHabana = new google.maps.Marker({
+    position: {lat: 23.113592, lng: -82.366592},
+    map: map,
+    label: '2',
+    title: 'Havana, Cuba'
+  });
+
+
+kigali.setMap(map);
+trujillo.setMap(map);
+laHabana.setMap(map);
 }
